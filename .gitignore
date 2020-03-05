@@ -1,0 +1,7 @@
+node_modules
+server/public
+server/dumps
+server/src/main/resources/reactapp
+out
+.gradle
+.idea
