@@ -6,10 +6,13 @@ import org.graalvm.polyglot.HostAccess
 import org.springframework.stereotype.Controller
 import org.springframework.util.StopWatch
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestAttribute
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import java.io.FileReader
 import javax.script.ScriptEngineManager
 import javax.script.ScriptEngine
+import javax.servlet.http.HttpServletRequest
 
 
 @Controller
@@ -30,9 +33,10 @@ class HtmlController {
 	val renderJs by lazy(::readRenderJs)
 	val engine by lazy(::initializeEngine)
 
-	@GetMapping("/")
+	@GetMapping("/", "/cloudicate/**")
 	@ResponseBody
-	fun blog(): String {
+	fun blog(request: HttpServletRequest): String {
+		println(request.requestURI)
 		val html = engine.eval(renderJs)
 		return indexHtml.replace("<div id=\"root\"></div>", "<div id=\"root\">$html</div>")
 	}
