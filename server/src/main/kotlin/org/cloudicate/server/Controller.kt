@@ -33,10 +33,11 @@ class HtmlController {
 	val renderJs by lazy(::readRenderJs)
 	val engine by lazy(::initializeEngine)
 
-	@GetMapping("/", "/cloudicate/**")
+	@GetMapping("/", "/r/**")
 	@ResponseBody
 	fun blog(request: HttpServletRequest): String {
 		println(request.requestURI)
+		engine.eval("window.requestUrl = '"+request.requestURI+"'")
 		val html = engine.eval(renderJs)
 		return indexHtml.replace("<div id=\"root\"></div>", "<div id=\"root\">$html</div>")
 	}

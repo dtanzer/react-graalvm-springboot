@@ -1,9 +1,9 @@
 import React from 'react'
 
-export function App(props: any) {
+export function List(props: any) {
   return (
     <div>
-        <h1>App</h1>
+        <h1>List</h1>
     </div>
   )
 }
