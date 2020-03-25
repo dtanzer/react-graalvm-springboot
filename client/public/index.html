@@ -38,11 +38,18 @@
 			To begin the development, run `npm start` or `yarn start`.
 			To create a production bundle, use `npm run build` or `yarn build`.
 		-->
-		<script defer type="module">
+		<script type="module">
+			function renderWhenAvailable() {
+				if(window.renderApp) {
+					window.renderApp()
+				} else {
+					window.setTimeout(renderWhenAvailable, 100)
+				}
+			}
 			if(window.isServer) {
 				window.renderAppOnServer()
 			} else {
-				window.renderApp()
+				renderWhenAvailable()
 			}
 		</script>
 	</body>

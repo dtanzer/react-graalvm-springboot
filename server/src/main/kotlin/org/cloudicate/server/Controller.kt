@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest
 class HtmlController {
 	val indexHtml by lazy {
 		HtmlController::class.java.getResource("/reactapp/index.html").readText()
+				.replace("<script", "<script defer=\"defer\"")
 	}
 	val runtimeMainJs by lazy {
 		HtmlController::class.java.getResource("/reactapp/js/runtime-main.js").readText()
@@ -36,14 +37,13 @@ class HtmlController {
 	@GetMapping("/", "/r/**")
 	@ResponseBody
 	fun blog(request: HttpServletRequest): String {
-		println(request.requestURI)
 		engine.eval("window.requestUrl = '"+request.requestURI+"'")
 		val html = engine.eval(renderJs)
 		return indexHtml.replace("<div id=\"root\"></div>", "<div id=\"root\">$html</div>")
 	}
 
 	private fun readInitJs(): String {
-		val startIndex = indexHtml.indexOf("<script>")+"<script>".length
+		val startIndex = indexHtml.indexOf("<script defer=\"defer\">")+"<script>".length
 		val endIndex = indexHtml.indexOf("</script>", startIndex)
 
 		return indexHtml.substring(startIndex, endIndex)
