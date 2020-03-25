@@ -1,0 +1,20 @@
+.navigation {
+	display: flex;
+	list-style: none;
+	padding: 0;
+}
+
+.navigation li {
+	margin: 0;
+	padding: 0;
+}
+
+.navigation li::after {
+	display: inline;
+	content: "|";
+	padding: 0 0.5em;
+}
+
+.navigation li:last-child::after {
+	content: "";
+}
