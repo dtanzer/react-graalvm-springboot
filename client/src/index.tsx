@@ -1,4 +1,3 @@
-import './index.css'
 import * as serviceWorker from './serviceWorker'
 
 import React from 'react'
