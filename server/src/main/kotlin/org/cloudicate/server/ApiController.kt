@@ -1,14 +1,24 @@
 package org.cloudicate.server
 
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 
-@Controller
+data class Item(val content: String)
+
+@Controller()
+@RequestMapping("/api")
 class ApiController {
-	@GetMapping("/api/list")
+	private val items: MutableList<Item> = ArrayList()
+	@GetMapping("/list")
 	@ResponseBody
-	fun getList(): List<String> {
-		return listOf("a", "b")
+	fun getList(): List<Item> {
+		return items
+	}
+
+	@PostMapping("/add")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	fun addItem(@RequestBody item: Item) {
+		items.add(item)
 	}
 }
