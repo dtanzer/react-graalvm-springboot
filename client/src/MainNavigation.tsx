@@ -23,7 +23,7 @@ const Item = styled.li`
 	}
 `
 
-export const MainNavigation = () => {
+export function MainNavigation() {
 	return (<Nav>
 		<Item><NavLink to="/">Home</NavLink></Item>
 		<Item><NavLink to="/r/about">About</NavLink></Item>
