@@ -3,6 +3,7 @@ package org.cloudicate.server
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine
 import org.graalvm.polyglot.Context
 import org.graalvm.polyglot.HostAccess
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.util.StopWatch
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,22 +18,29 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 class HtmlController {
-	val indexHtml by lazy {
+	private val apiService: ApiService
+
+	private val indexHtml by lazy {
 		HtmlController::class.java.getResource("/reactapp/index.html").readText()
 				.replace("<script", "<script defer=\"defer\"")
 	}
-	val runtimeMainJs by lazy {
+	private val runtimeMainJs by lazy {
 		HtmlController::class.java.getResource("/reactapp/js/runtime-main.js").readText()
 	}
-	val mainJs by lazy {
+	private val mainJs by lazy {
 		HtmlController::class.java.getResource("/reactapp/js/main.chunk.js").readText()
 	}
-	val secondJs by lazy {
+	private val secondJs by lazy {
 		HtmlController::class.java.getResource("/reactapp/js/2.chunk.js").readText()
 	}
-	val initJs by lazy(::readInitJs)
-	val renderJs by lazy(::readRenderJs)
-	val engine by lazy(::initializeEngine)
+	private val initJs by lazy(::readInitJs)
+	private val renderJs by lazy(::readRenderJs)
+	private val engine by lazy(::initializeEngine)
+
+	@Autowired
+	constructor(apiService: ApiService) {
+		this.apiService = apiService
+	}
 
 	@GetMapping("/", "/r/**")
 	@ResponseBody
@@ -64,7 +72,9 @@ class HtmlController {
 						.allowHostAccess(HostAccess.ALL)
 						.allowHostClassLookup({ s -> true }))
 
-		engine.eval("window = { location: { hostname: 'localhost' } }")
+		engine.put("api", apiService)
+
+		engine.eval("window = { location: { hostname: 'localhost' }, api: api }")
 		engine.eval("navigator = {}")
 		engine.eval(runtimeMainJs)
 		engine.eval(mainJs)

@@ -20,6 +20,7 @@ export function List(props: any) {
 		}))
 
 		await fetchList()
+		setNewItem('')
 	}
 
 	useEffect(()=>{fetchList()}, [])
@@ -27,7 +28,7 @@ export function List(props: any) {
 	return (
 		<div>
 			<h1>List</h1>
-			<ul>{list.map(i => <li>{i.content}</li>)}</ul>
+			<ul>{list.map(i => <li key={i.id}>{i.content}</li>)}</ul>
 			<div>
 				<input type="text" value={newItem} onChange={e=>setNewItem(e.target.value)} />
 				<button onClick={addNewItem}>Add</button>
