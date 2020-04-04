@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 class HtmlController {
-	private val apiService: ApiService
+	private val serverApi: ServerApi
 
 	private val indexHtml by lazy {
 		HtmlController::class.java.getResource("/reactapp/index.html").readText()
@@ -38,8 +38,8 @@ class HtmlController {
 	private val engine by lazy(::initializeEngine)
 
 	@Autowired
-	constructor(apiService: ApiService) {
-		this.apiService = apiService
+	constructor(serverApi: ServerApi) {
+		this.serverApi = serverApi
 	}
 
 	@GetMapping("/", "/r/**")
@@ -72,7 +72,7 @@ class HtmlController {
 						.allowHostAccess(HostAccess.ALL)
 						.allowHostClassLookup({ s -> true }))
 
-		engine.put("api", apiService)
+		engine.put("api", serverApi)
 
 		engine.eval("window = { location: { hostname: 'localhost' }, api: api }")
 		engine.eval("navigator = {}")

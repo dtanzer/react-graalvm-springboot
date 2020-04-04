@@ -1,7 +1,10 @@
 import React, { useEffect, useState, } from 'react'
 
+import { onServer } from './onServer'
+
 export function List(props: any) {
-	const [ list, setList ] = useState<any[]>([])
+	const initialList = onServer(serverApi => serverApi.getList(), [])
+	const [ list, setList ] = useState<any[]>(initialList)
 	const [ newItem, setNewItem ] = useState('')
 
 	const fetchList = async () => {
