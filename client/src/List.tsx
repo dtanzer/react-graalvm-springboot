@@ -1,16 +1,19 @@
 import React, { useEffect, useState, } from 'react'
 
-import { onServer } from './onServer'
+import { onServer, serverData, } from './onServer'
 
 export function List(props: any) {
-	const initialList = onServer(serverApi => serverApi.getList(), [])
+	const [ initialList, initScript ] = onServer(serverApi => serverApi.getList(), [], 'app.list')
 	const [ list, setList ] = useState<any[]>(initialList)
 	const [ newItem, setNewItem ] = useState('')
 
 	const fetchList = async () => {
-		const response = await window.fetch('/api/list')
-		const list = await response.json()
-		setList(list)
+		var listData: any[] = serverData('app.list')
+		if(!listData) {
+			const response = await window.fetch('/api/list')
+			listData = await response.json()
+		}
+		setList(listData)
 	}
 
 	const addNewItem = async () => {
@@ -31,11 +34,12 @@ export function List(props: any) {
 	return (
 		<div>
 			<h1>List</h1>
-			<ul>{list.map(i => <li key={i.id}>{i.content}</li>)}</ul>
+			<ul>{ list.map(i => <li key={i.id}>{i.content}</li>) }</ul>
 			<div>
 				<input type="text" value={newItem} onChange={e=>setNewItem(e.target.value)} />
 				<button onClick={addNewItem}>Add</button>
 			</div>
+			{ initScript }
 		</div>
 	)
 }
