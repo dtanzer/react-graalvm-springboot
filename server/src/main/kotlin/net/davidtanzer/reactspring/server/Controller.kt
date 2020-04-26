@@ -1,4 +1,4 @@
-package org.cloudicate.server
+package net.davidtanzer.reactspring.server
 
 import com.oracle.truffle.js.scriptengine.GraalJSScriptEngine
 import org.graalvm.polyglot.Context

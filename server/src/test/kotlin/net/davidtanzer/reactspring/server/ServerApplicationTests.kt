@@ -1,4 +1,4 @@
-package org.cloudicate.server
+package net.davidtanzer.reactspring.server
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

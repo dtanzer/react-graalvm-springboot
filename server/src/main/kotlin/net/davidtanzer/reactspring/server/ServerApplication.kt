@@ -1,4 +1,4 @@
-package org.cloudicate.server
+package net.davidtanzer.reactspring.server
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
